@@ -1,6 +1,6 @@
 var config = {
   app: {
-    port: 3000,
+    port: 8852,
     ip: '0.0.0.0',
     env: 'dev'
   }

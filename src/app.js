@@ -5,8 +5,16 @@ const webpack = require('webpack');
 const webpackDevMiddleware = require('webpack-dev-middleware');
 const webpackHotMiddleware = require('webpack-hot-middleware');
 const webpackConfig = require('../webpack.config.dev');
+var bodyParser = require('body-parser');
+var mongoose = require('mongoose');
+var cookieParser = require('cookie-parser');
+
+mongoose.connect(config.app.mongo_url);
 
 var app = express();
+
+app.use(bodyParser.json());
+app.use(cookieParser());
 
 app.set('env', config.app.env);
 app.use(express.static(path.join(__dirname, '../dist')));
@@ -17,15 +25,17 @@ if (config.app.env === 'dev') {
   app.use(webpackHotMiddleware(compiler));
 }
 
-const statusController = require('./status');
-const versionController = require('./version');
-const aboutMeController = require('./aboutMe');
-const rootController = require('./root');
+const statusController = require('./routes/status');
+const versionController = require('./routes/version');
+const aboutMeController = require('./routes/aboutMe');
+const rootController = require('./routes/index');
+const tournamentController = require('./routes/tournament');
 
 app.use('/status', statusController);
 app.use('/version', versionController);
 app.use('/me', aboutMeController);
 app.use('/', rootController);
+app.use('/tournament', tournamentController);
 
 app.use('/dist', express.static(__dirname + '/../dist'));
 app.use('/img', express.static(__dirname + '/../static/img'));
@@ -34,7 +44,7 @@ app.use('/img', express.static(__dirname + '/../static/img'));
 
 // catch 404 and forward to error handler
 app.use((req, res, next) => {
-  res.sendFile(__dirname + '/root/index.html');
+  res.sendFile(__dirname + '/routes/index.html');
 });
 
 // error handlers
