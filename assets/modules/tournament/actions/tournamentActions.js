@@ -16,15 +16,24 @@ function fetchTournamentFailure() {
     }
 }
 
+export function fetchTournament(tournamentId) {
+    return dispatch => {
+        return fetch(config.api.url + '/tournament/' + tournamentId)
+        .then(res => {
+            dispatch(fetchTournamentSuccess(normalize(res, tournament).entities))
+        })
+        .catch(res => {
+            dispatch(fetchTournamentFailure());
+            return Promise.reject(res);
+        })
+    }
+}
+
 export function fetchTournaments() {
     return dispatch => {
         return fetch(config.api.url + '/tournament')
         .then(res => {
-            try {
-                dispatch(fetchTournamentSuccess(normalize(res, arrayOf(tournament)).entities))
-            } catch(e) {
-                console.error(e);
-            }
+            dispatch(fetchTournamentSuccess(normalize(res, arrayOf(tournament)).entities))
         })
         .catch(e => {
             dispatch(fetchTournamentFailure())

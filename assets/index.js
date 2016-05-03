@@ -46,9 +46,9 @@ const store = configureStore();
 const history = syncHistoryWithStore(browserHistory, store);
 
 import { fetchAuthentication } from './modules/auth/actions/loginActions'
-import { fetchTournaments } from './modules/tournament/actions/tournamentActions'
+import { fetchTournament, fetchTournaments } from './modules/tournament/actions/tournamentActions'
 
-const actions = bindActionCreators({ fetchAuthentication, fetchTournaments }, store.dispatch);
+const actions = bindActionCreators({ fetchAuthentication, fetchTournaments, fetchTournament }, store.dispatch);
 
 actions.fetchAuthentication()
   .then(() => {
@@ -64,8 +64,20 @@ function requireAuth(nextState, replace) {
   }
 }
 
+function fetchTournamentOnEnter (nextState, replace, next) {
+  actions.fetchTournament(nextState.params.tournamentId).then(res => {
+    next();
+  }).catch(res => {
+    if (res.status === 404) {
+      replace('/');
+    }
+    next();
+  })
+}
+
 import App from './modules/core/components/App';
 import TournamentListContainer from './modules/tournament/TournamentListContainer';
+import TournamentContainer from './modules/tournament/TournamentContainer';
 import rootReducer from './reducers';
 import LoginContainer from './modules/auth/LoginContainer';
 
@@ -75,6 +87,7 @@ render(
       <Route path="/" component={App}>
         <IndexRoute component={TournamentListContainer} onEnter={actions.fetchTournaments} />
         <Route path="/home" component={TournamentListContainer} onEnter={actions.fetchTournaments}/>
+        <Route path="/tournament/:tournamentId" component={TournamentContainer} onEnter={fetchTournamentOnEnter}/>
       </Route>
       <Route path="/login" component={LoginContainer} />
     </Router>

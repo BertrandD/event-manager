@@ -12,6 +12,12 @@ function makeAuthenticatedRequest(url, opts = {}) {
 
 export function fetch (url, data) {
     return makeAuthenticatedRequest(url, data)
+        .then(res => {
+            if (res.status < 200 || res.status >= 400) {
+                return Promise.reject(res);
+            }
+            return res;
+        })
         .then(res => res.json())
 }
 
