@@ -1,0 +1,7 @@
+const config = {
+    api: {
+        url: 'http://localhost:8852'
+    }
+};
+
+export default config;
