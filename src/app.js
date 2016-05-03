@@ -31,11 +31,11 @@ const aboutMeController = require('./routes/aboutMe');
 const rootController = require('./routes/index');
 const tournamentController = require('./routes/tournament');
 
-app.use('/status', statusController);
-app.use('/version', versionController);
-app.use('/me', aboutMeController);
-app.use('/', rootController);
-app.use('/tournament', tournamentController);
+app.use('/api/status', statusController);
+app.use('/api/version', versionController);
+app.use('/api/me', aboutMeController);
+app.use('/api/', rootController);
+app.use('/api/tournament', tournamentController);
 
 app.use('/dist', express.static(__dirname + '/../dist'));
 app.use('/img', express.static(__dirname + '/../static/img'));

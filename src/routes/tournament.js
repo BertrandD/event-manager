@@ -35,6 +35,27 @@ router.post('/', function (req, res) {
     });
 });
 
+router.get('/:id', function (req, res) {
+    Tournament.findOne({
+        _id: req.params.id
+    }, function (err, results) {
+        if (err) {
+            res.statusCode = 500;
+            res.json({err: err.message});
+            return;
+        }
+
+        if (!results) {
+            res.statusCode = 404;
+            res.json({err: 'Tournament nod found'});
+            return;
+        }
+
+        res.statusCode = 200;
+        res.json(results);
+    });
+});
+
 router.get('/', function (req, res) {
     Tournament.find({
         status: {
@@ -51,4 +72,5 @@ router.get('/', function (req, res) {
         res.json(results);
     });
 });
+
 module.exports = router;
