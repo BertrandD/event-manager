@@ -13,13 +13,6 @@ function makeAuthenticatedRequest(url, opts = {}) {
 export function fetch (url, data) {
     return makeAuthenticatedRequest(url, data)
         .then(res => res.json())
-        .then(response => {
-            if (response.status === "ok") {
-                return response;
-            } else {
-                throw response;
-            }
-        })
 }
 
 export function postAsForm(url, data = {}) {

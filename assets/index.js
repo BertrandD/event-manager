@@ -7,7 +7,6 @@ import { Provider } from 'react-redux';
 import thunkMiddleware from 'redux-thunk'
 import createLogger from 'redux-logger';
 import { routerMiddleware, syncHistoryWithStore } from 'react-router-redux'
-import { fetchAuthentication } from './modules/auth/actions/loginActions'
 
 function configureStore(initialState = {}) {
 
@@ -46,7 +45,10 @@ function configureStore(initialState = {}) {
 const store = configureStore();
 const history = syncHistoryWithStore(browserHistory, store);
 
-const actions = bindActionCreators({ fetchAuthentication }, store.dispatch);
+import { fetchAuthentication } from './modules/auth/actions/loginActions'
+import { fetchTournaments } from './modules/tournament/actions/tournamentActions'
+
+const actions = bindActionCreators({ fetchAuthentication, fetchTournaments }, store.dispatch);
 
 actions.fetchAuthentication()
   .then(() => {
@@ -63,7 +65,7 @@ function requireAuth(nextState, replace) {
 }
 
 import App from './modules/core/components/App';
-import HomeContainer from './modules/core/components/HomeContainer';
+import TournamentListContainer from './modules/tournament/TournamentListContainer';
 import rootReducer from './reducers';
 import LoginContainer from './modules/auth/LoginContainer';
 
@@ -71,8 +73,8 @@ render(
   <Provider store={store}>
     <Router history={history}>
       <Route path="/" component={App}>
-        <IndexRoute component={HomeContainer} />
-        <Route path="/home" component={HomeContainer} />
+        <IndexRoute component={TournamentListContainer} onEnter={actions.fetchTournaments} />
+        <Route path="/home" component={TournamentListContainer} onEnter={actions.fetchTournaments}/>
       </Route>
       <Route path="/login" component={LoginContainer} />
     </Router>
