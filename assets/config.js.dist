@@ -1,6 +1,6 @@
 const config = {
     api: {
-        url: 'http://localhost:8852'
+        url: 'http://localhost:8852/api'
     }
 };
 

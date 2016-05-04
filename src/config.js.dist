@@ -2,7 +2,8 @@ var config = {
   app: {
     port: 8852,
     ip: '0.0.0.0',
-    env: 'dev'
+    env: 'dev',
+    mongo_url: 'mongodb://localhost:27017/tournaments'
   }
 };
 
