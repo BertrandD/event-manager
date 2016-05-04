@@ -2,6 +2,7 @@ var router = require('express').Router();
 var ObjectId = require('mongoose').Types.ObjectId;
 var Tournament = require('../models/tournament');
 var slugify = require('slugify');
+var url = require('url');
 
 router.post('/', function (req, res) {
     if (!req.body.name || !req.body.start_date || !req.body.end_date) {
@@ -57,11 +58,18 @@ router.get('/:id', function (req, res) {
 });
 
 router.get('/', function (req, res) {
-    Tournament.find({
-        status: {
+
+    var query = url.parse(req.url, true).query;
+
+    const filter = {};
+
+    if (!query.filter || query.filter !== 'all') {
+        filter.status = {
             '$in': ['closed', 'open']
         }
-    }, function (err, results) {
+    }
+
+    Tournament.find(filter, function (err, results) {
         if (err) {
             res.statusCode = 500;
             res.json({err: err.message});
