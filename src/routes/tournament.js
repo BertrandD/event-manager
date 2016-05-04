@@ -92,7 +92,7 @@ router.get('/', function (req, res) {
 
     if (!query.filter || query.filter !== 'all') {
         filter.status = {
-            '$in': ['closed', 'open']
+            '$in': ['closed', 'open', 'private']
         }
     }
 

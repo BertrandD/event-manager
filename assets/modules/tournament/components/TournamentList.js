@@ -15,30 +15,31 @@ class TournamentList extends Component {
                 <table className="table">
                     <thead>
                     <tr>
-                        <th>Name</th>
-                        <th>Start date</th>
-                        <th>End date</th>
-                        <th>Status</th>
-                        <th>Remaining before start</th>
+                        <th>Nom</th>
+                        <th>Date</th>
+                        <th>Heure</th>
+                        <th></th>
                     </tr>
                     </thead>
                     <tbody>
                     {map(this.props.tournaments, (tournament, id) => (
-                        <tr key={id} className="cursor-pointer" onClick={browserHistory.push.bind(null, `/tournament/${id}`)}>
+                        <tr key={id}>
                             <td>
                                 {tournament.name}
                             </td>
                             <td>
-                                {tournament.start_date}
+                                {tournament.date}
                             </td>
                             <td>
-                                {tournament.end_date}
+                                {tournament.hour}
                             </td>
                             <td>
-                                {tournament.status}
-                            </td>
-                            <td>
-                                <CountDown endDate={tournament.start_date} />
+                                <a href={"/tournament/"+tournament._id} target="_blank" className="btn btn-default">
+                                    Open
+                                </a>
+                                <button onClick={browserHistory.push.bind(null, `/edit/tournament/${id}`)} className="btn btn-default">
+                                    Edit
+                                </button>
                             </td>
                         </tr>
                     ))}
