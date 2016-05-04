@@ -6,7 +6,7 @@ class App extends Component {
     render() {
       const { children } = this.props;
         return (
-          <div>
+          <div className="app app-header-fixed app-aside-fixed">
             <header className="app-header navbar" role="menu">
               <div className="navbar-header bg-dark">
                 <Link to="/" className="navbar-brand text-lt">

@@ -11,7 +11,7 @@ class TournamentList extends Component {
 
     render() {
         return (
-            <div>
+            <div className="panel panel-default">
                 <table className="table">
                     <thead>
                     <tr>

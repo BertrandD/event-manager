@@ -2,14 +2,14 @@ import React, { Component, PropTypes } from 'react';
 import CountDown from '../../core/components/CountDown'
 import TournamentRegisterForm from './TournamentRegisterForm'
 import './Tournament.scss'
-import '../TournamentLandingPage.scss'
+import '../../../../scss/CentralBlock.scss'
 
 class Tournament extends Component {
 
     constructor(props, context) {
         super(props, context);
         this.state = {
-            displayRegisterForm: false,
+            displayRegisterForm: this.props.displayRegisterForm || false,
             registerForm: {}
         }
 
@@ -39,29 +39,38 @@ class Tournament extends Component {
                     {tournament.name}
                 </div>
                 <div className="TournamentDate">
-                    <p>Vendredi 6 mai 2016</p>
-                    <p>19h</p>
+                    <p>{tournament.date}</p>
+                    <p>{tournament.hour}</p>
                 </div>
-                <div className="BlockTitle">
-                    <i className="fa fa-globe">
-                    </i>
-                    Description du tournois
-                </div>
-                <div className="BlockContent" dangerouslySetInnerHTML={{__html:tournament.description}}>
-                </div>
-                <div className="BlockTitle">
-                    <i className="fa fa-gavel">
-                    </i>
-                    Règles du tournois
-                </div>
-                <div className="BlockContent" dangerouslySetInnerHTML={{__html:tournament.rules}}>
-                </div>
+                {tournament.description && (
+                    <div>
+                        <div className="BlockTitle">
+                            <i className="fa fa-globe">
+                            </i>
+                            Description du tournois
+                        </div>
+                        <div className="BlockContent" dangerouslySetInnerHTML={{__html:tournament.description}}>
+                        </div>
+                    </div>
+                )}
+                {tournament.rules && (
+                    <div>
+                        <div className="BlockTitle">
+                            <i className="fa fa-gavel">
+                            </i>
+                            Règles du tournois
+                        </div>
+                        <div className="BlockContent" dangerouslySetInnerHTML={{__html:tournament.rules}}>
+                        </div>
+                    </div>
+                )}
                 <div className="TournamentRegister">
                     <button className="btn btn-primary" onClick={this.displayRegisterForm.bind(this)}>M'inscrire au tournois</button>
                 </div>
                 {this.state.displayRegisterForm && (
                     <TournamentRegisterForm onCancel={this.handleRegisterFormCancel.bind(this)}
-                                            onSubmit={this.handleRegisterFormSubmit.bind(this)}/>
+                                            onSubmit={this.handleRegisterFormSubmit.bind(this)}
+                                            fields={tournament.fields}/>
                 )}
             </div>
         )
@@ -69,7 +78,8 @@ class Tournament extends Component {
 }
 
 Tournament.propTypes = {
-    tournament: PropTypes.object.isRequired
+    tournament: PropTypes.object.isRequired,
+    displayRegisterForm: PropTypes.bool
 };
 
 export default Tournament;

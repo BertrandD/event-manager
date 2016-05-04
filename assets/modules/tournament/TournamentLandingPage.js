@@ -13,7 +13,7 @@ class TournamentLandingPage extends Component {
 
     render() {
         return (
-            <div>
+            <div className="TournamentLandingPage">
                 <div className="CentralBlock">
                     <Tournament tournament={this.props.tournament} />
                 </div>

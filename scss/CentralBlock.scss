@@ -1,0 +1,28 @@
+.CentralBlock {
+  max-width: 700px;
+  background: #fff;
+  margin: auto;
+  padding: 15px;
+
+  .BlockContent {
+    margin-bottom: 25px;
+  }
+
+  .BlockTitle {
+    font-weight: bold;
+    font-size: 1.2em;
+    margin-bottom: 15px;
+
+    i {
+      margin-right: 3px;
+    }
+  }
+
+  label {
+    font-weight: bold;
+  }
+
+  button {
+    margin-right: 5px;
+  }
+}

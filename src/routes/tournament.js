@@ -3,11 +3,13 @@ var ObjectId = require('mongoose').Types.ObjectId;
 var Tournament = require('../models/tournament');
 var slugify = require('slugify');
 var url = require('url');
+var pick = require('lodash/pick');
+var forEach = require('lodash/forEach');
 
 router.post('/', function (req, res) {
-    if (!req.body.name || !req.body.start_date || !req.body.end_date) {
+    if (!req.body.name) {
         res.statusCode = 400;
-        res.json({err: 'Name or start date or end date missing'});
+        res.json({err: 'Name missing'});
         return;
     }
 
@@ -21,8 +23,11 @@ router.post('/', function (req, res) {
             new Tournament({
                 _id: slug,
                 name: req.body.name,
-                start_date: req.body.start_date,
-                end_date: req.body.end_date
+                date: req.body.date,
+                hour: req.body.hour,
+                description: req.body.description,
+                rules: req.body.rules,
+                fields: req.body.fields
             }).save(function (err, result) {
                 if (err) {
                     res.statusCode = 500;
@@ -32,6 +37,28 @@ router.post('/', function (req, res) {
 
                 res.json(result);
             });
+        }
+    });
+});
+
+router.put('/:id', function (req, res) {
+    Tournament.findOne({_id: req.params.id}, function (err, result) {
+        if (!result) {
+            res.statusCode = 404;
+            res.json({err: 'Tournament not found !'});
+        } else {
+            forEach(pick(req.body, ['name', 'date', 'hour', 'description', 'rules', 'fields']), (value, key) => {
+                result[key] = value
+            });
+            result.save(function (err, result) {
+                if (err) {
+                    res.statusCode = 500;
+                    res.json({err: err.message});
+                    return;
+                }
+
+                res.json(result);
+            })
         }
     });
 });

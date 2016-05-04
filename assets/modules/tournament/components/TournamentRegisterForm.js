@@ -2,16 +2,13 @@ import React, { Component, PropTypes } from 'react';
 import CountDown from '../../core/components/CountDown'
 import forEach from 'lodash/forEach'
 import './Tournament.scss'
-import '../TournamentLandingPage.scss'
 
 class TournamentRegisterForm extends Component {
 
     constructor(props, context) {
         super(props, context);
         this.state = {
-            errors: {
-                pseudo: 'initial'
-            }
+            errors: {}
         }
     }
 
@@ -33,19 +30,19 @@ class TournamentRegisterForm extends Component {
         });
     }
 
-    handleChange(ref) {
-        if (ref === 'pseudo') {
+    handleChange(ref, isRequired) {
+        if (isRequired) {
             if (!this.refs[ref].value || this.refs[ref].value.length < 1) {
                 this.setState({
-                    errors: {
-                        pseudo: ref === 'pseudo' ? 'error' : this.state.errors.pseudo
-                    }
+                    errors: Object.assign({}, this.state.errors, {
+                        [ref]: 'error'
+                    })
                 })
             } else {
                 this.setState({
-                    errors: {
-                        pseudo: 'good'
-                    }
+                    errors: Object.assign({}, this.state.errors, {
+                        [ref]: 'good'
+                    })
                 })
             }
         }
@@ -73,15 +70,18 @@ class TournamentRegisterForm extends Component {
         return (
             <div>
                 <form onSubmit={this.handleSubmit.bind(this)}>
-                    <div className={this.getClassName('pseudo')}>
-                        <label className="control-label" >Pseudo sur Discord</label>
-                        <input type="text" ref="pseudo" placeholder="Ton pseudo" onChange={this.handleChange.bind(this, 'pseudo')} className="form-control"/>
-                        {this.state.errors.pseudo === "error" && (
-                            <span className="glyphicon glyphicon-remove form-control-feedback" aria-hidden="true"> </span>
-                        ) || this.state.errors.pseudo === "good" && (
-                            <span className="glyphicon glyphicon-ok form-control-feedback" aria-hidden="true"> </span>
-                        )}
-                    </div>
+                    {this.props.fields.map((field, index) => (
+                        <div key={index} className={this.getClassName(index)}>
+                            <label className="control-label" >{field.label}</label>
+                            <input type="text" ref={index} placeholder={field.label} onChange={this.handleChange.bind(this, index, field.isRequired)} className="form-control"/>
+                            {this.state.errors[index] === "error" && (
+                                <span className="glyphicon glyphicon-remove form-control-feedback" aria-hidden="true"> </span>
+                            ) || this.state.errors[index] === "good" && (
+                                <span className="glyphicon glyphicon-ok form-control-feedback" aria-hidden="true"> </span>
+                            )}
+                        </div>
+                    ))}
+
 
                     <button type="submit" className="btn btn-success" disabled={this.hasError()}>Valider mon inscription</button>
                     <button type="button" className="btn btn-default" onClick={this.props.onCancel}>Annuler</button>
@@ -93,7 +93,8 @@ class TournamentRegisterForm extends Component {
 
 TournamentRegisterForm.propTypes = {
     onCancel: PropTypes.func.isRequired,
-    onSubmit: PropTypes.func.isRequired
+    onSubmit: PropTypes.func.isRequired,
+    fields: PropTypes.array.isRequired
 };
 
 export default TournamentRegisterForm;

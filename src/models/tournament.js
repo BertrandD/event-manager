@@ -18,13 +18,13 @@ var schema =
             type: String,
             require: true
         },
-        start_date: {
-            type: Date,
-            require: true
+        date: {
+            type: String,
+            default: ''
         },
-        end_date: {
-            type: Date,
-            require: true
+        hour: {
+            type: String,
+            default: ''
         },
         status: {
             type: String,
@@ -37,6 +37,10 @@ var schema =
         rules: {
             type: String,
             default: ''
+        },
+        fields: {
+            type: Array,
+            default: ''
         }
 
     });
@@ -45,6 +49,8 @@ schema.pre('save', function (callback) {
     if (!this.author) {
         this.author = 'Anonymous';
     }
+
+    this.date_modified = Date.now();
 
     return callback();
 });

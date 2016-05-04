@@ -15,9 +15,7 @@ function AppContentWrapper ({ children, title, subtitle }) {
       </div>
 
       <div className="wrapper-md">
-        <div className="panel panel-default">
           {children}
-        </div>
       </div>
     </div>
   );

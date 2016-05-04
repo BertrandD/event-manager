@@ -78,6 +78,8 @@ function fetchTournamentOnEnter (nextState, replace, next) {
 import App from './modules/core/components/App';
 import TournamentListContainer from './modules/tournament/TournamentListContainer';
 import TournamentLandingPage from './modules/tournament/TournamentLandingPage';
+import TournamentCreateContainer from './modules/tournament/TournamentCreateContainer';
+import TournamentEditContainer from './modules/tournament/TournamentEditContainer';
 import rootReducer from './reducers';
 import LoginContainer from './modules/auth/LoginContainer';
 
@@ -89,6 +91,8 @@ render(
       <Route path="/" component={App}>
         <IndexRoute component={TournamentListContainer} onEnter={actions.fetchTournaments} />
         <Route path="/home" component={TournamentListContainer} onEnter={actions.fetchTournaments}/>
+        <Route path="/create/tournament" component={TournamentCreateContainer}/>
+        <Route path="/edit/tournament/:tournamentId" component={TournamentEditContainer} onEnter={fetchTournamentOnEnter}/>
       </Route>
     </Router>
   </Provider>,
