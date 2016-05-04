@@ -57,7 +57,7 @@ export function fetchTournament(tournamentId) {
 
 export function fetchTournaments() {
     return dispatch => {
-        return fetch(config.api.url + '/tournament')
+        return fetch(config.api.url + '/tournament?filter=all')
         .then(res => {
             dispatch(fetchTournamentSuccess(normalize(res, arrayOf(tournament)).entities))
         })
