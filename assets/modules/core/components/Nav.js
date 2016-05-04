@@ -7,6 +7,11 @@ function Nav () {
       icon: 'glyphicon-home',
       path: '/',
       title: 'Home'
+    },
+    {
+      icon: 'glyphicon-plus',
+      path: '/create/tournament',
+      title: 'Create new tournament'
     }
   ];
 
