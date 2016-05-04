@@ -29,7 +29,16 @@ var schema =
         status: {
             type: String,
             default: 'private'
+        },
+        description: {
+            type: String,
+            default: ''
+        },
+        rules: {
+            type: String,
+            default: ''
         }
+
     });
 
 schema.pre('save', function (callback) {
